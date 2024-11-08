@@ -1,7 +1,7 @@
 package routes
 
 import (
-    "github.com/Mides-Projects/kyro"
+    "github.com/Mides-Projects/Kyro"
     "github.com/gofiber/fiber/v3"
 )
 
@@ -27,7 +27,7 @@ func Lookup(ctx fiber.Ctx) error {
         return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
             "message": "No value provided",
         })
-    } else if t, err := kyro.Service().HandleLookup(v, src == "id"); err != nil {
+    } else if t, err := Kyro.Service().HandleLookup(v, src == "id"); err != nil {
         return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
             "message": err.Error(),
         })

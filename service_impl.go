@@ -1,13 +1,13 @@
-package kyro
+package Kyro
 
 import (
     "context"
     "errors"
+    "github.com/Mides-Projects/Kyro/model"
+    "github.com/Mides-Projects/Operator/helper"
     "github.com/Mides-Projects/Quark"
-    "github.com/Mides-Projects/Zurita/helper"
-    "github.com/Mides-Projects/Zurita/player"
-    pimodel "github.com/Mides-Projects/Zurita/player/model"
-    "github.com/Mides-Projects/kyro/model"
+    "github.com/Mides-Projects/Zurita"
+    pimodel "github.com/Mides-Projects/Zurita/model"
     "go.mongodb.org/mongo-driver/bson"
     "go.mongodb.org/mongo-driver/mongo"
     "sync"
@@ -92,9 +92,9 @@ func (s *ServiceImpl) HandleLookup(id string, idSrc bool) (*model.Tracker, error
         err error
     )
     if idSrc {
-        pi, err = player.Service().UnsafeLookupByID(id)
+        pi, err = Zurita.Service().UnsafeLookupByID(id)
     } else {
-        pi, err = player.Service().UnsafeLookupByName(id)
+        pi, err = Zurita.Service().UnsafeLookupByName(id)
     }
 
     if err != nil {
@@ -126,7 +126,7 @@ func (s *ServiceImpl) HandleHandshake(pi *pimodel.PlayerInfo) error {
 
 // HandleDisconnect handles the disconnection of a player.
 func (s *ServiceImpl) HandleDisconnect(pi *pimodel.PlayerInfo, err error) error {
-    if err != nil && errors.Is(err, player.ErrTimestampOld) {
+    if err != nil && errors.Is(err, Zurita.ErrTimestampOld) {
         return nil // Ignore error because we don't need to invalidate the tracker.
     }
 
@@ -156,7 +156,7 @@ func (s *ServiceImpl) Hook() error {
             return
         }
 
-        pi := player.Service().LookupByID(id)
+        pi := Zurita.Service().LookupByID(id)
         if pi != nil && pi.Online() {
             return // No clear the tracker if the player is online.
         }
