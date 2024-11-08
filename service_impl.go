@@ -117,28 +117,6 @@ func (s *ServiceImpl) HandleLookup(id string, idSrc bool) (*model.Tracker, error
     }
 }
 
-// HandleHandshake handles the handshake of a player.
-func (s *ServiceImpl) HandleHandshake(pi *pimodel.PlayerInfo) error {
-    s.ttlSet.Invalidate(pi.ID()) // Invalidate the TTL set.
-
-    return nil
-}
-
-// HandleDisconnect handles the disconnection of a player.
-func (s *ServiceImpl) HandleDisconnect(pi *pimodel.PlayerInfo, err error) error {
-    if err != nil && errors.Is(err, Zurita.ErrTimestampOld) {
-        return nil // Ignore error because we don't need to invalidate the tracker.
-    }
-
-    s.mu.Lock()
-    delete(s.trackers, pi.ID())
-    s.mu.Unlock()
-
-    s.ttlSet.Invalidate(pi.ID())
-
-    return nil
-}
-
 // Hook initializes the service.
 func (s *ServiceImpl) Hook() error {
     if s.ttlSet != nil {
@@ -167,6 +145,8 @@ func (s *ServiceImpl) Hook() error {
     })
 
     s.col = helper.MongoClient.Database(helper.MongoDBName).Collection("grants")
+
+    Zurita.Service().SetNatsHandler(NatsHandler{})
 
     return nil
 }

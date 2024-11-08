@@ -4,7 +4,7 @@ go 1.23.2
 
 require (
 	github.com/Mides-Projects/Quark v0.0.0-20241107064902-262287d88ad4
-	github.com/Mides-Projects/Zurita v0.0.0-20241108231137-7c0605a89c8b
+	github.com/Mides-Projects/Zurita v0.0.0-20241108233458-484572f8f6ff
 	github.com/gofiber/fiber/v3 v3.0.0-beta.3
 	go.mongodb.org/mongo-driver v1.17.1
 )
@@ -42,4 +42,4 @@ require (
 	golang.org/x/text v0.19.0 // indirect
 )
 
-replace github.com/Mides-Projects/Operator => github.com/Mides-Projects/Operator-App v0.0.0-20241108230822-a6ca1b09438f
+replace github.com/Mides-Projects/Operator => github.com/Mides-Projects/Operator-App v0.0.0-20241108233644-cf6e5b0c5925

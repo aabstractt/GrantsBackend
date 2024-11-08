@@ -1,11 +1,13 @@
 github.com/Mides-Projects/Operator-App v0.0.0-20241108230822-a6ca1b09438f h1:xTsIiW+LTbbSoi7NsmH2rzRHcDY2JVW7hj/f9yvhaiI=
 github.com/Mides-Projects/Operator-App v0.0.0-20241108230822-a6ca1b09438f/go.mod h1:zwavA3FDESOfQARAmtAxKX8rwdLVC+aCtlQ9SU/1RlQ=
+github.com/Mides-Projects/Operator-App v0.0.0-20241108233644-cf6e5b0c5925/go.mod h1:VylLC+CW8hpRjsceHP86NgIBcFCQDg0bh6abrUrKIzI=
 github.com/Mides-Projects/Quark v0.0.0-20241107064902-262287d88ad4 h1:l2/itBakYrMuuhW7WLEG4dCobMIyKovMghrEDODWX30=
 github.com/Mides-Projects/Quark v0.0.0-20241107064902-262287d88ad4/go.mod h1:wZ1yNNP7bq+YRIp2HsVOIapp+W8DEdvV4nLxB3Snoz8=
 github.com/Mides-Projects/Zurita v0.0.0-20241108225351-c9bf89906776 h1:EYEodbrHwBcccEXYHSRSkmK7Q0wmo1goDznQrvY1ZIQ=
 github.com/Mides-Projects/Zurita v0.0.0-20241108225351-c9bf89906776/go.mod h1:wato+AAv9NT7SpXNwNZhoBu4GSQ2D534Hl3u9uhJXMI=
 github.com/Mides-Projects/Zurita v0.0.0-20241108231137-7c0605a89c8b h1:PgoXEdObvOirSa8Yhm7l4qmUKEH9ZSPhXHn5GsKe+U0=
 github.com/Mides-Projects/Zurita v0.0.0-20241108231137-7c0605a89c8b/go.mod h1:LdBEc9WNrObEEGUecornUPU144Ys93Xh/EQ+nH9utwU=
+github.com/Mides-Projects/Zurita v0.0.0-20241108233458-484572f8f6ff/go.mod h1:LdBEc9WNrObEEGUecornUPU144Ys93Xh/EQ+nH9utwU=
 github.com/andybalholm/brotli v1.1.1 h1:PR2pgnyFznKEugtsUo0xLdDop5SKXd5Qf5ysW+7XdTA=
 github.com/andybalholm/brotli v1.1.1/go.mod h1:05ib4cKhjx3OQYUY22hTVd34Bc8upXjOLL2rKwwZBoA=
 github.com/bytedance/sonic v1.12.4 h1:9Csb3c9ZJhfUWeMtpCDCq6BUoH5ogfDFLUgQ/jG+R0k=
