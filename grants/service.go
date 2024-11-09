@@ -102,46 +102,49 @@ func (s *ServiceImpl) HandleLookup(id string, idSrc, exp bool) (map[string]inter
 		return nil, err
 	} else if pi == nil {
 		return nil, nil
-	} else if t, err := s.UnsafeLookup(pi.ID()); err != nil {
-		return nil, err
-	} else {
-		if t == nil {
-			t = model.NewTracker(pi.ID())
-		}
-
-		// Cache the tracker if it does not exist.
-		if s.Lookup(pi.ID()) == nil {
-			s.cache(t, pi.Online())
-		}
-
-		expired := make(map[string]interface{})
-		if exp {
-			for _, gi := range t.Expired() {
-				expired[gi.ID()] = gi.Marshal()
-			}
-		}
-
-		actives := make(map[string]interface{})
-		for _, gi := range t.Actives() {
-			actives[gi.ID()] = gi.Marshal()
-		}
-
-		body := map[string]interface{}{
-			"expired": expired,
-			"actives": actives,
-		}
-
-		go helper.PublishNats(
-			SubjectLookup,
-			map[string]interface{}{
-				"service_id": helper.ServiceId,
-				"player_id":  pi.ID(),
-				"body":       body,
-			},
-		)
-
-		return body, nil
 	}
+
+	t, err := s.UnsafeLookup(pi.ID())
+	if err != nil {
+		return nil, err
+	}
+
+	if t == nil {
+		t = model.NewTracker(pi.ID())
+	}
+
+	// Cache the tracker if it does not exist.
+	if s.Lookup(pi.ID()) == nil {
+		s.cache(t, pi.Online())
+	}
+
+	expired := make(map[string]interface{})
+	if exp {
+		for _, gi := range t.Expired() {
+			expired[gi.ID()] = gi.Marshal()
+		}
+	}
+
+	actives := make(map[string]interface{})
+	for _, gi := range t.Actives() {
+		actives[gi.ID()] = gi.Marshal()
+	}
+
+	body := map[string]interface{}{
+		"expired": expired,
+		"actives": actives,
+	}
+
+	go helper.PublishNats(
+		SubjectLookup,
+		map[string]interface{}{
+			"service_id": helper.ServiceId,
+			"player_id":  pi.ID(),
+			"body":       body,
+		},
+	)
+
+	return body, nil
 }
 
 // Hook initializes the service.
