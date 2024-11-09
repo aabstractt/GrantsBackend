@@ -2,7 +2,6 @@ package routes
 
 import (
     "github.com/Mides-Projects/Kyro/bgroups"
-    "github.com/Mides-Projects/Operator/helper"
     "github.com/gofiber/fiber/v3"
 )
 
@@ -15,8 +14,7 @@ func Retrieve(ctx fiber.Ctx) error {
 
     if len(body) == 0 {
         return ctx.Status(fiber.StatusNoContent).JSON(fiber.Map{
-            "message":    "No groups found",
-            "service_id": helper.ServiceId,
+            "message": "No groups found",
         })
     }
 
