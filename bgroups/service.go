@@ -126,7 +126,7 @@ func (s *ServiceImpl) Hook() error {
         }
     }
 
-    helper.Log.Info("Successfully loaded " + string(rune(len(s.values))) + " group(s) from the database!")
+    helper.Log.Info("Successfully loaded " + string(len(s.values)) + " group(s) from the database!")
 
     if _, err := helper.NatsClient.Subscribe(SubjectCreateGroup, s.natsCreateGroup); err != nil {
         return errors.Join(errors.New("failed to subscribe to create group"), err)
