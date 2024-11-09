@@ -11,27 +11,27 @@ type NatsHandler struct {
 
 // HandleHandshake handles a handshake request.
 func (NatsHandler) HandleHandshake(id string, _ map[string]interface{}) error {
-    if grantsService == nil {
-        return errors.New("Kyro: no grantsService")
+    if service == nil {
+        return errors.New("Kyro: no service")
     }
 
-    grantsService.ttlSet.Invalidate(id)
+    service.ttlSet.Invalidate(id)
 
     return nil
 }
 
 // HandleQuit handles a quit request.
 func (NatsHandler) HandleQuit(id string) error {
-    if grantsService == nil {
-        return errors.New("Kyro: no grantsService")
-    } else if pi := grantsService.Lookup(id); pi == nil {
+    if service == nil {
+        return errors.New("Kyro: no service")
+    } else if pi := service.Lookup(id); pi == nil {
         return errors.New("Kyro: player not found")
     } else {
-        grantsService.mu.Lock()
-        delete(grantsService.trackers, pi.ID())
-        grantsService.mu.Unlock()
+        service.mu.Lock()
+        delete(service.trackers, pi.ID())
+        service.mu.Unlock()
 
-        grantsService.ttlSet.Invalidate(pi.ID())
+        service.ttlSet.Invalidate(pi.ID())
     }
 
     return nil
