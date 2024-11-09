@@ -2,6 +2,7 @@ package model
 
 import (
     "errors"
+    "go.mongodb.org/mongo-driver/bson/primitive"
     "slices"
     "sync"
 )
@@ -166,11 +167,13 @@ func (g *Group) Marshal() map[string]interface{} {
 
 // Unmarshal unmarshals the body into the group.
 func (g *Group) Unmarshal(body map[string]interface{}) error {
-    id, ok := body["_id"].(string)
-    if !ok {
-        return errors.New("_id is not a string")
+    if id, ok := body["_id"].(string); ok {
+        g.id = id
+    } else if id, ok := body["_id"].(primitive.ObjectID); ok {
+        g.id = id.String()
+    } else {
+        return errors.New("_id is not a string or primitive.ObjectID")
     }
-    g.id = id
 
     name, ok := body["name"].(string)
     if !ok {

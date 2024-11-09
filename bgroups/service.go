@@ -122,8 +122,7 @@ func (s *ServiceImpl) Hook() error {
         if err = cur.Decode(&body); err != nil {
             helper.Log.Error("failed to decode group", "error", err)
         } else if err = g.Unmarshal(body); err != nil {
-            helper.Log.Error("failed to unmarshal group", "error", err)
-            helper.Log.Error("group body", "body", body)
+            helper.Log.Error("failed to unmarshal group", "error", err, "body", body)
         } else {
             s.cache(g)
         }
