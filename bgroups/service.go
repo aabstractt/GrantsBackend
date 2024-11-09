@@ -8,6 +8,7 @@ import (
     "github.com/bytedance/sonic"
     "github.com/google/uuid"
     "github.com/nats-io/nats.go"
+    "go.mongodb.org/mongo-driver/bson"
     "go.mongodb.org/mongo-driver/mongo"
     "strings"
     "sync"
@@ -107,9 +108,9 @@ func (s *ServiceImpl) Hook() error {
     // caching the context helps a lot with performance and memory usage
     s.ctx = context.Background()
 
-    cur, err := s.col.Find(s.ctx, nil)
+    cur, err := s.col.Find(s.ctx, bson.M{})
     if err != nil {
-        return errors.Join(errors.New("failed to find groups"), err)
+        return err
     }
 
     for cur.Next(s.ctx) {
