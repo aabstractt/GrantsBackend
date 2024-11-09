@@ -80,7 +80,7 @@ func (s *ServiceImpl) Insert(name string) (string, error) {
 
     go func() {
         // Insert the group into the MongoDB collection.
-        if _, err := s.col.InsertOne(s.ctx, g); err != nil {
+        if _, err := s.col.InsertOne(s.ctx, g.Marshal()); err != nil {
             panic(err)
         }
 
