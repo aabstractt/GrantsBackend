@@ -87,8 +87,9 @@ func (s *ServiceImpl) Insert(name string) (string, error) {
         helper.PublishNats(
             SubjectCreateGroup,
             map[string]interface{}{
-                "id":   g.ID(),
-                "name": g.Name(),
+                "service_id": helper.ServiceId,
+                "name":       g.Name(),
+                "id":         g.ID(),
             },
         )
     }()
@@ -142,6 +143,10 @@ func (s *ServiceImpl) natsCreateGroup(msg *nats.Msg) {
     var body map[string]interface{}
     if err := sonic.Unmarshal(msg.Data, &body); err != nil {
         helper.Log.Error("failed to unmarshal create group message", "error", err)
+    } else if servID, ok := body["service_id"].(string); !ok {
+        helper.Log.Error("create group message missing service ID")
+    } else if servID == helper.ServiceId {
+        helper.Log.Info("Ignoring create group message from self")
     } else if id, ok := body["id"].(string); !ok {
         helper.Log.Error("create group message missing ID")
     } else if name, ok := body["name"].(string); !ok {
