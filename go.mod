@@ -4,7 +4,7 @@ go 1.23.2
 
 require (
 	github.com/Mides-Projects/Quark v0.0.0-20241107064902-262287d88ad4
-	github.com/Mides-Projects/Zurita v0.0.0-20241109014104-cc516f7e6eba
+	github.com/Mides-Projects/Zurita v0.0.0-20241109055458-47393085db00
 	github.com/gofiber/fiber/v3 v3.0.0-beta.3
 	go.mongodb.org/mongo-driver v1.17.1
 )
