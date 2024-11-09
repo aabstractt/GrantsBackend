@@ -42,4 +42,4 @@ require (
 	golang.org/x/text v0.20.0 // indirect
 )
 
-replace github.com/Mides-Projects/Operator => github.com/Mides-Projects/Operator-App v0.0.0-20241108233644-cf6e5b0c5925
+replace github.com/Mides-Projects/Operator => github.com/Mides-Projects/Operator-App v0.0.0-20241109035605-c0debb21322d

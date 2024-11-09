@@ -1,9 +1,9 @@
-package Kyro
+package grants
 
 import (
     "context"
     "errors"
-    "github.com/Mides-Projects/Kyro/model"
+    model2 "github.com/Mides-Projects/Kyro/grants/model"
     "github.com/Mides-Projects/Operator/helper"
     "github.com/Mides-Projects/Quark"
     "github.com/Mides-Projects/Zurita"
@@ -15,16 +15,17 @@ import (
 )
 
 type ServiceImpl struct {
-    trackers map[string]*model.Tracker
+    trackers map[string]*model2.Tracker
     mu       sync.RWMutex
 
     ttlSet *Quark.Set
     // Player collection from MongoDB.
     col *mongo.Collection
+    ctx context.Context
 }
 
 // cache caches the tracker information.
-func (s *ServiceImpl) cache(t *model.Tracker, keep bool) {
+func (s *ServiceImpl) cache(t *model2.Tracker, keep bool) {
     s.mu.Lock()
     s.trackers[t.ID()] = t
     s.mu.Unlock()
@@ -38,7 +39,7 @@ func (s *ServiceImpl) cache(t *model.Tracker, keep bool) {
 
 // Lookup returns the tracker with the given ID.
 // This method is thread-safe because it only reads the cache.
-func (s *ServiceImpl) Lookup(id string) *model.Tracker {
+func (s *ServiceImpl) Lookup(id string) *model2.Tracker {
     s.mu.RLock()
     defer s.mu.RUnlock()
 
@@ -48,27 +49,29 @@ func (s *ServiceImpl) Lookup(id string) *model.Tracker {
 // UnsafeLookup returns the tracker with the given ID
 // first by checking the cache and then the MongoDB collection.
 // This method is not thread-safe.
-func (s *ServiceImpl) UnsafeLookup(id string) (*model.Tracker, error) {
+func (s *ServiceImpl) UnsafeLookup(id string) (*model2.Tracker, error) {
     if t := s.Lookup(id); t != nil {
         return t, nil
     } else if s.col == nil {
         return nil, errors.New("no MongoDB collection")
+    } else if s.ctx == nil {
+        return nil, errors.New("no context")
     }
 
     // Fetch the grants from the MongoDB collection.
-    cur, err := s.col.Find(context.Background(), bson.M{"source_id": id})
+    cur, err := s.col.Find(s.ctx, bson.M{"source_id": id})
     if err != nil {
         return nil, err
     }
 
-    t := model.NewTracker(id)
-    for cur.Next(context.Background()) {
+    t := model2.NewTracker(id)
+    for cur.Next(s.ctx) {
         var body map[string]interface{}
         if err = cur.Decode(&body); err != nil {
             return nil, err
         }
 
-        gi := &model.GrantInfo{}
+        gi := &model2.GrantInfo{}
         if err = gi.Unmarshal(body); err != nil {
             return nil, err
         }
@@ -84,7 +87,7 @@ func (s *ServiceImpl) UnsafeLookup(id string) (*model.Tracker, error) {
 }
 
 // HandleLookup handles the lookup of a player.
-func (s *ServiceImpl) HandleLookup(id string, idSrc bool) (*model.Tracker, error) {
+func (s *ServiceImpl) HandleLookup(id string, idSrc bool) (*model2.Tracker, error) {
     var (
         pi  *pimodel.PlayerInfo
         err error
@@ -103,7 +106,7 @@ func (s *ServiceImpl) HandleLookup(id string, idSrc bool) (*model.Tracker, error
         return nil, err
     } else {
         if t == nil {
-            t = model.NewTracker(pi.ID())
+            t = model2.NewTracker(pi.ID())
         }
 
         // Cache the tracker if it does not exist.
@@ -122,6 +125,9 @@ func (s *ServiceImpl) Hook() error {
     } else if s.col != nil {
         return errors.New("GrantsX: mongo collection already set")
     }
+
+    // caching the context helps a lot with performance and memory usage
+    s.ctx = context.Background()
 
     s.ttlSet = Quark.NewSet(
         1*time.Hour,
@@ -149,10 +155,11 @@ func (s *ServiceImpl) Hook() error {
     return nil
 }
 
+// Service returns the service.
 func Service() *ServiceImpl {
     return service
 }
 
 var service = &ServiceImpl{
-    trackers: make(map[string]*model.Tracker),
+    trackers: make(map[string]*model2.Tracker),
 }
