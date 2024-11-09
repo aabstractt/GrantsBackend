@@ -21,6 +21,7 @@ type ServiceImpl struct {
     ttlSet *Quark.Set
     // Player collection from MongoDB.
     col *mongo.Collection
+    ctx context.Context
 }
 
 // cache caches the tracker information.
@@ -53,16 +54,18 @@ func (s *ServiceImpl) UnsafeLookup(id string) (*model2.Tracker, error) {
         return t, nil
     } else if s.col == nil {
         return nil, errors.New("no MongoDB collection")
+    } else if s.ctx == nil {
+        return nil, errors.New("no context")
     }
 
     // Fetch the grants from the MongoDB collection.
-    cur, err := s.col.Find(context.Background(), bson.M{"source_id": id})
+    cur, err := s.col.Find(s.ctx, bson.M{"source_id": id})
     if err != nil {
         return nil, err
     }
 
     t := model2.NewTracker(id)
-    for cur.Next(context.Background()) {
+    for cur.Next(s.ctx) {
         var body map[string]interface{}
         if err = cur.Decode(&body); err != nil {
             return nil, err
@@ -122,6 +125,9 @@ func (s *ServiceImpl) Hook() error {
     } else if s.col != nil {
         return errors.New("GrantsX: mongo collection already set")
     }
+
+    // caching the context helps a lot with performance and memory usage
+    s.ctx = context.Background()
 
     s.ttlSet = Quark.NewSet(
         1*time.Hour,

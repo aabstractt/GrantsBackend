@@ -2,6 +2,7 @@ github.com/Mides-Projects/Operator-App v0.0.0-20241108230822-a6ca1b09438f h1:xTs
 github.com/Mides-Projects/Operator-App v0.0.0-20241108230822-a6ca1b09438f/go.mod h1:zwavA3FDESOfQARAmtAxKX8rwdLVC+aCtlQ9SU/1RlQ=
 github.com/Mides-Projects/Operator-App v0.0.0-20241108233644-cf6e5b0c5925 h1:EGu8oLlY7MD85GRZKVquuy9eQPxG7RCkd0aX12JhrSQ=
 github.com/Mides-Projects/Operator-App v0.0.0-20241108233644-cf6e5b0c5925/go.mod h1:VylLC+CW8hpRjsceHP86NgIBcFCQDg0bh6abrUrKIzI=
+github.com/Mides-Projects/Operator-App v0.0.0-20241109035605-c0debb21322d/go.mod h1:skAOF7VaNqXPxMiDsgdJHO6iTaNpXwrHEsNsXYS0nmU=
 github.com/Mides-Projects/Quark v0.0.0-20241107064902-262287d88ad4 h1:l2/itBakYrMuuhW7WLEG4dCobMIyKovMghrEDODWX30=
 github.com/Mides-Projects/Quark v0.0.0-20241107064902-262287d88ad4/go.mod h1:wZ1yNNP7bq+YRIp2HsVOIapp+W8DEdvV4nLxB3Snoz8=
 github.com/Mides-Projects/Zurita v0.0.0-20241108225351-c9bf89906776 h1:EYEodbrHwBcccEXYHSRSkmK7Q0wmo1goDznQrvY1ZIQ=
