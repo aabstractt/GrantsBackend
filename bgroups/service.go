@@ -35,6 +35,19 @@ func (s *ServiceImpl) cache(g *model.Group) {
     s.idsMu.Unlock()
 }
 
+// Values returns all the groups.
+func (s *ServiceImpl) Values() []*model.Group {
+    s.mu.RLock()
+    defer s.mu.RUnlock()
+
+    v := make([]*model.Group, 0, len(s.values))
+    for _, g := range s.values {
+        v = append(v, g)
+    }
+
+    return v
+}
+
 // LookupByID returns the group with the given ID.
 func (s *ServiceImpl) LookupByID(id string) *model.Group {
     s.mu.RLock()
