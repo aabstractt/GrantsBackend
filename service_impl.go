@@ -51,9 +51,7 @@ func (s *ServiceImpl) Lookup(id string) *model.Tracker {
 func (s *ServiceImpl) UnsafeLookup(id string) (*model.Tracker, error) {
     if t := s.Lookup(id); t != nil {
         return t, nil
-    }
-
-    if s.col == nil {
+    } else if s.col == nil {
         return nil, errors.New("no MongoDB collection")
     }
 
