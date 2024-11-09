@@ -93,6 +93,8 @@ func (s *ServiceImpl) Insert(name string) (string, error) {
         )
     }()
 
+    helper.Log.Info("Successfully created group", "id", g.ID(), "name", name)
+
     return g.ID(), nil
 }
 
@@ -146,6 +148,8 @@ func (s *ServiceImpl) natsCreateGroup(msg *nats.Msg) {
         helper.Log.Error("create group message missing name")
     } else {
         s.cache(model.NewGroup(id, name))
+
+        helper.Log.Info("Successfully created group", "id", id, "name", name)
     }
 }
 
