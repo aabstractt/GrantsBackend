@@ -1,12 +1,12 @@
 package routes
 
 import (
-    "github.com/Mides-Projects/Kyro"
+    "github.com/Mides-Projects/Kyro/grants"
     "github.com/gofiber/fiber/v3"
 )
 
-// Lookup handles the player lookup.
-func Lookup(ctx fiber.Ctx) error {
+// GrantsLookup handles the lookup of player grants.
+func GrantsLookup(ctx fiber.Ctx) error {
     if exp := ctx.Query("expired"); exp == "" {
         return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
             "message": "No expired provided",
@@ -27,7 +27,7 @@ func Lookup(ctx fiber.Ctx) error {
         return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
             "message": "No value provided",
         })
-    } else if t, err := Kyro.Service().HandleLookup(v, src == "id"); err != nil {
+    } else if t, err := grants.Service().HandleLookup(v, src == "id"); err != nil {
         return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
             "message": err.Error(),
         })
